@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>work 1: แบบทดสอบ วิทยาศาสตร์ ป.1</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="container-fluid p-5 bg-primary text-white text-center">
+  <h1>แบบทดสอบ วิทยาศาสตร์ ป.1</h1>
+</div>
+  
+<div class="container mt-5 p-5">
+  <div class="row" id="startBox">
+    <button class="btn btn-primary" id="btnStart">เริ่มทำแบบทดสอบ</button>
+  </div>
+  <div class="row" id="quizBox">
+    <div id="quizContent" class="mt-4"></div>
+    <button class="btn btn-success mt-3" id="btnCheckAnswer">ตรวจคำตอบ</button>
+  </div>
+  <div id="resultBox" class="mt-4 text-center"></div>
+</div>
+
+<script>
+  $(function () {
+    $("#quizBox").hide(); // ซ่อนส่วนคำถามตอนเริ่มต้น
+    let questions = [];
+
+    // โหลดคำถามจากไฟล์ JSON
+    $.getJSON("quiz.json", function (data) {
+      questions = data;
+    });
+
+    // เมื่อกดปุ่มเริ่มทำแบบทดสอบ
+    $("#btnStart").click(function () {
+      $("#startBox").hide();
+      $("#quizBox").show();
+
+      let quizHtml = "";
+      questions.forEach((q, index) => {
+        quizHtml += `
+          <div class="mb-4">
+            <p><strong>คำถาม ${index + 1}:</strong> ${q.question}</p>
+            ${q.options
+              .map(
+                (option) => `
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="question${index}" value="${option}">
+                  <label class="form-check-label">${option}</label>
+                </div>
+              `
+              )
+              .join("")}
+          </div>
+        `;
+      });
+
+      $("#quizContent").html(quizHtml);
+    });
+
+    // ตรวจสอบคำตอบ
+    $("#btnCheckAnswer").click(function () {
+      let score = 0;
+      let total = questions.length;
+
+      questions.forEach((q, index) => {
+        const selected = $(`input[name=question${index}]:checked`).val();
+        if (selected === q.answer) {
+          score++;
+        }
+      });
+
+      $("#resultBox").html(`
+        <div class="alert alert-info">
+          <h4>คะแนนของคุณคือ ${score}/${total}</h4>
+        </div>
+      `);
+    });
+  });
+</script>
+</body>
+</html>
