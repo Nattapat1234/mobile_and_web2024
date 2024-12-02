@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แบบทดสอบภาษาไทย</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@3.7.4/dist/vuetify.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@3.7.4/dist/vuetify.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: #f5f5f5;
+        }
+        .question-card {
+            margin-bottom: 16px;
+        }
+        .sticky-footer {
+            position: sticky;
+            bottom: 0;
+            padding: 16px;
+            background-color: #1976d2;
+            color: white;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <v-app>
+            <v-container>
+                <!-- หน้าเริ่มต้น -->
+                <div v-if="page === 1" class="text-center">
+                    <h1>แบบทดสอบภาษาไทย</h1>
+                    <p>กดปุ่มด้านล่างเพื่อเริ่มทำแบบทดสอบ</p>
+                    <v-btn color="primary" @click="page = 2">เริ่มทำแบบทดสอบ</v-btn>
+                </div>
+
+                <!-- หน้าแบบทดสอบ -->
+                <div v-if="page === 2">
+                    <h2>คุณกำลังทำแบบทดสอบ</h2>
+                    <v-card v-for="(q, index) in qlist" :key="index" class="question-card pa-4">
+                        <div>ข้อที่ {{ index + 1 }}</div>
+                        <div v-html="q.question" class="pa-2"></div>
+                        <v-radio-group v-model="answers[index]">
+                            <v-radio
+                                v-for="(option, optIndex) in q.options"
+                                :key="optIndex"
+                                :label="option"
+                                :value="optIndex + 1"
+                            ></v-radio>
+                        </v-radio-group>
+                    </v-card>
+
+                    <div class="sticky-footer">
+                        <v-btn v-if="validate()" color="green" @click="grading()">
+                            <v-icon>mdi-check</v-icon> ตรวจคำตอบ
+                        </v-btn>
+                        <div v-else>กรุณาตอบคำถามให้ครบ</div>
+                    </div>
+                </div>
+
+                <!-- หน้าตรวจคำตอบ -->
+                <div v-if="page === 3" class="text-center">
+                    <h1>ผลคะแนน</h1>
+                    <p>คุณได้คะแนน {{ score }} จาก {{ qlist.length }}</p>
+                    <v-btn color="primary" @click="restart()">เริ่มทำใหม่</v-btn>
+                </div>
+            </v-container>
+        </v-app>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        const { createVuetify } = Vuetify;
+
+        const vuetify = createVuetify();
+
+        const app = createApp({
+            data() {
+                return {
+                    page: 1, 
+                    qlist: [], 
+                    answers: [], 
+                    score: 0 
+                };
+            },
+            mounted() {
+                this.loadQuestions(); 
+            },
+            methods: {
+                async loadQuestions() {
+                    try {
+                        const response = await fetch('questions.json');
+                        if (response.ok) {
+                            this.qlist = await response.json(); 
+                        } else {
+                            console.error('Failed to load questions:', response.status);
+                        }
+                    } catch (error) {
+                        console.error('Error loading questions:', error);
+                    }
+                },
+                validate() {
+                    return this.answers.length === this.qlist.length && this.answers.every(answer => answer);
+                },
+                grading() {
+                    this.score = this.qlist.reduce((acc, question, index) => {
+                        return acc + (this.answers[index] === question.answer ? 1 : 0);
+                    }, 0);
+                    this.page = 3;
+                },
+                restart() {
+                    this.page = 1;
+                    this.answers = [];
+                    this.score = 0;
+                }
+            }
+        });
+
+        app.use(vuetify).mount('#app');
+    </script>
+</body>
+</html>
