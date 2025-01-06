@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;700&display=swap');
+
+      body {
+        margin: 0;
+        overflow: hidden;
+        font-family: 'Prompt', sans-serif;
+      }
+
+      .text-container {
+        position: absolute;
+        top: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        padding: 20px;
+        border-radius: 15px;
+        font-size: 24px;
+        text-align: center;
+        line-height: 1.5;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 3s ease-in-out;
+      }
+
+      .audio-controls {
+        position: absolute;
+        bottom: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 15px;
+        font-size: 18px;
+        cursor: pointer;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .audio-controls:hover {
+        background: #45a049;
+      }
+    </style>
+    <title>แนะนำตัวเองแบบ VR-360</title>
+  </head>
+  <body>
+    <a-scene>
+      <!-- พื้นหลัง 360 องศา -->
+      <a-sky src="assets/Designer (1).png"></a-sky>
+
+      <!-- รูปภาพของคุณ หมุนรอบข้อความ -->
+      <a-entity 
+        position="0 1.2 -3"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 5000">
+        <a-image
+          src="assets/Me.jpg"
+          position="2 0 0"
+          width="1.5"
+          height="1.5"
+          rotation="0 0 0">
+        </a-image>
+      </a-entity>
+
+      <!-- โมเดลสัตว์เรียงกัน -->
+      <a-entity 
+        gltf-model="assets/doggy_meme_dog_ps1.glb"
+        position="-2 0.5 -3"
+        scale="0.5 0.5 0.5"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 4000">
+      </a-entity>
+
+      <a-entity 
+        gltf-model="assets/moo_deng.glb"
+        position="0 0.5 -3"
+        scale="1.2 1.2 1.2"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 4000">
+      </a-entity>
+
+      <a-entity 
+        gltf-model="assets/oiiaioooooiai_cat.glb"
+        position="2 0.5 -3"
+        scale="1.2 1.2 1.2"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 4000">
+      </a-entity>
+
+
+      <!-- แสงเพื่อความสมจริง -->
+      <a-light type="point" color="#ffffff" intensity="1" position="2 4 2"></a-light>
+    </a-scene>
+
+    <!-- ข้อความแนะนำตัว -->
+    <div class="text-container">
+      รหัส: 653380129-4 ชื่อ: ณัฐภัทร โพธิจันทร์<br>
+      ฉันเป็นนักศึกษาวิทยาลัยคอมพิวเตอร์<br>
+      ฉันชอบกินส้มตำ และปิ้งไก่<br>
+      ฉันเป็นคนอีสาน ฉันอาศัยในจังหวัดมหาสารคาม<br>
+      ฉันชอบเลี้ยงหมา และแมว<br>
+    </div>
+
+    <!-- เพลงประกอบ -->
+    <audio id="background-music" autoplay loop>
+      <source src="assets/music.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+
+    <!-- ปุ่มเปิด/ปิดเพลง -->
+    <div class="audio-controls" onclick="toggleMusic()">
+      🎵 เพลงที่ฉันชอบ
+    </div>
+
+    <script>
+      function toggleMusic() {
+        const audio = document.getElementById('background-music');
+        if (audio.paused) {
+          audio.play();
+        } else {
+          audio.pause();
+        }
+      }
+    </script>
+  </body>
+</html>
