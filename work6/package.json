@@ -2,11 +2,9 @@
   "name": "work6",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://nattapat1234.github.io/mobile_and_web2024/work6", 
-  
+  "homepage": "https://nattapat1234.github.io/mobile_and_web2024",
   "dependencies": {
     "bootstrap": "^5.3.3",
-    "cra-template": "1.2.0",
     "firebase": "^11.2.0",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
@@ -14,25 +12,15 @@
     "react-scripts": "5.0.1",
     "web-vitals": "^4.2.4"
   },
-  
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    
-
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   },
-  
   "browserslist": {
     "production": [
       ">0.2%",
@@ -44,9 +32,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  
-  "devDependencies": {
-    "gh-pages": "^6.3.0" 
   }
 }
