@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.js": "/mobile_and_web2024/work6/static/js/main.75fe55a6.js",
-    "index.html": "/mobile_and_web2024/work6/index.html",
-    "main.75fe55a6.js.map": "/mobile_and_web2024/work6/static/js/main.75fe55a6.js.map"
+    "main.js": "/mobile_and_web2024/static/js/main.75fe55a6.js",
+    "index.html": "/mobile_and_web2024/index.html",
+    "main.75fe55a6.js.map": "/mobile_and_web2024/static/js/main.75fe55a6.js.map"
   },
   "entrypoints": [
     "static/js/main.75fe55a6.js"
